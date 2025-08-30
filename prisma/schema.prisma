@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,28 +8,27 @@ datasource db {
 }
 
 model User {
-  id              String @id @default(cuid())
-  name            String?
-  email           String @unique
-  emailVerified   DateTime?
-  image           String?
-  hashedPassword  String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  favoriteIds     String[]
-
-  listings        Listing[]
-  reservations    Reservation[]
+  id             String        @id @default(cuid())
+  name           String?
+  email          String        @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  favoriteIds    String[]
+  listings       Listing[]
+  reservations   Reservation[]
 
   @@map("users")
 }
 
 model Listing {
-  id            String @id @default(cuid())
+  id            String        @id @default(cuid())
   title         String
   description   String
   imageSrc      String
-  createdAt     DateTime @default(now())
+  createdAt     DateTime      @default(now())
   category      String
   roomCount     Int
   bathroomCount Int
@@ -40,27 +36,25 @@ model Listing {
   locationValue String
   userId        String
   price         Int
-
-  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   reservations  Reservation[]
 
   @@map("listings")
 }
 
 model Reservation {
-  id          String @id @default(cuid())
-  userId      String
-  listingId   String
-  startDate   DateTime
-  endDate     DateTime
-  totalPrice  Int
-  guestCount  Int
-  roomCount   Int
+  id            String   @id @default(cuid())
+  userId        String
+  listingId     String
+  startDate     DateTime
+  endDate       DateTime
+  totalPrice    Int
+  createdAt     DateTime @default(now())
   bathroomCount Int
-  createdAt   DateTime @default(now())
-
-  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  listing     Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  guestCount    Int
+  roomCount     Int
+  listing       Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("reservations")
 }
